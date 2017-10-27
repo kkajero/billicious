@@ -1,0 +1,6 @@
+{
+    "require-dev": {
+        "phpspec/phpspec": "^4.1",
+        "behat/behat": "^3.4"
+    }
+}
