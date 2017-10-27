@@ -27,8 +27,6 @@ class FeatureContext implements Context
     public function customersVisitARestaurant($names)
     {
         $this->setUpCustomers($names);
-
-        throw new PendingException();
     }
 
     /**
@@ -65,9 +63,10 @@ class FeatureContext implements Context
 
     private function setUpCustomers($names)
     {
+        $this->customers = [];
         foreach (explode(',', $names) as $index => $name) {
             $id = $index + 1;
-            $customer = new \Model\Customer($id, $name);
+            $this->customers[] = new \Model\Customer($id, $name);
         }
     }
 }
