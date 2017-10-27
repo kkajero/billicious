@@ -24,8 +24,10 @@ class FeatureContext implements Context
     /**
      * @Given /^(Jane, Petra, Maya) visit a restaurant$/
      */
-    public function customersVisitARestaurant($customers)
+    public function customersVisitARestaurant($names)
     {
+        $this->setUpCustomers($names);
+
         throw new PendingException();
     }
 
@@ -59,5 +61,13 @@ class FeatureContext implements Context
     public function theTipShouldBe($amount)
     {
         throw new PendingException();
+    }
+
+    private function setUpCustomers($names)
+    {
+        foreach (explode(',', $names) as $index => $name) {
+            $id = $index + 1;
+            $customer = new \Model\Customer($id, $name);
+        }
     }
 }
