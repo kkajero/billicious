@@ -4,7 +4,7 @@ Feature: Meal order
     I would like to pay the bill smoothly and swiftly
 
     Scenario: Order available items, split the bill
-        Given Jane, Petra, Maya visit a restaurant:
+        Given Jane, Petra, Maya visit a restaurant
         And they order the following items:
         | name  | price | available | quantity |
         | Chips | 2.50  | true      | 3        |
