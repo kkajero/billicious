@@ -5,5 +5,8 @@
     },
     "autoload": {
         "psr-4": {"": "src/"}
+    },
+    "require": {
+        "moneyphp/money": "^3.0"
     }
 }
