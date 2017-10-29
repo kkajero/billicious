@@ -4,6 +4,7 @@ use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Webmozart\Assert\Assert;
 
 /**
  * Defines application features from the specific context.
@@ -38,11 +39,13 @@ class FeatureContext implements Context
     }
 
     /**
-     * @When :customer pays :payment toward the bill
+     * @When :customer pays :amount toward the bill
      */
-    public function customerPaysTowardTheBill($payment)
+    public function customerPaysTowardTheBill($amount)
     {
-        throw new PendingException();
+        $payment = Model\PaymentFactory::payment($this->toPence($amount));
+
+        $this->order->bill()->acceptPayment($payment);
     }
 
     /**
@@ -50,7 +53,7 @@ class FeatureContext implements Context
      */
     public function theBillShouldBeClosed()
     {
-        throw new PendingException();
+        Assert::true($this->order->bill()->isClosed());
     }
 
     /**
@@ -58,7 +61,9 @@ class FeatureContext implements Context
      */
     public function theTipShouldBe($amount)
     {
-        throw new PendingException();
+        $tip = $this->order->bill()->tip();
+
+        Assert::eq($tip->getAmount(), $this->toPence($amount));
     }
 
     private function setUpCustomers($names)
@@ -75,7 +80,7 @@ class FeatureContext implements Context
         $this->order = new Model\MealOrder;
 
         foreach ($table as $row) {
-            $row['price'] = str_replace('.', '', $row['price']);
+            $row['price'] = $this->toPence($row['price']);
             $item = Model\FoodItemFactory::create($row);
 
             $count = 0;
@@ -84,5 +89,10 @@ class FeatureContext implements Context
                 $count++;
             }
         }
+    }
+
+    private function toPence($amount)
+    {
+        return str_replace('.', '', $amount);
     }
 }
