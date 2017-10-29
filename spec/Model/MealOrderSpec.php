@@ -21,4 +21,22 @@ class MealOrderSpec extends ObjectBehavior
 
         $this->items()->shouldBe([$item]);
     }
+
+    function it_opens_the_bill_on_first_item()
+    {
+        $this->bill()->shouldBe(null);
+
+        $item = FoodItemFactory::create();
+        $this->add($item);
+
+        $this->bill()->shouldHaveType('\Model\MealOrder\Bill');
+    }
+
+    function it_adds_items_to_the_bill()
+    {
+        $this->add(FoodItemFactory::create(['price' => '5']));
+        $this->add(FoodItemFactory::create(['price' => '5']));
+
+        $this->bill()->total()->getAmount()->shouldBe('10');
+    }
 }
