@@ -12,6 +12,10 @@ class MealOrder
 
     public function add(FoodItem $item)
     {
+        if (!$item->available()) {
+            throw new \InvalidArgumentException('Cannot order unavailable food item');
+        }
+
         $this->items[] = $item;
         $this->updateBill($item);
     }

@@ -32,11 +32,18 @@ class MealOrderSpec extends ObjectBehavior
         $this->bill()->shouldHaveType('\Model\MealOrder\Bill');
     }
 
-    function it_adds_items_to_the_bill()
+    function it_adds_food_items_to_the_bill()
     {
         $this->add(FoodItemFactory::create(['price' => '5']));
         $this->add(FoodItemFactory::create(['price' => '5']));
 
         $this->bill()->total()->getAmount()->shouldBe('10');
+    }
+
+    function it_rejects_unavailable_food_items()
+    {
+        $unavailableItem = FoodItemFactory::create(['available' => false]);
+
+        $this->shouldThrow('\InvalidArgumentException')->duringAdd($unavailableItem);
     }
 }
