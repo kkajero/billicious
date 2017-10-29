@@ -24,7 +24,7 @@ class FoodItemFactorySpec extends ObjectBehavior
         $foodItem = self::create();
 
         $foodItem->name()->shouldEqual(FoodItem::NAME_DEFAULT);
-        $foodItem->price()->shouldEqual(FoodItem::PRICE_DEFAULT);
+        $foodItem->price()->getAmount()->shouldEqual(FoodItem::PRICE_DEFAULT);
         $foodItem->available()->shouldEqual(FoodItem::AVAILABLE_DEFAULT);
     }
 
@@ -38,7 +38,7 @@ class FoodItemFactorySpec extends ObjectBehavior
         $foodItem = self::create($data);
 
         $foodItem->name()->shouldEqual($data['name']);
-        $foodItem->price()->shouldEqual(FoodItem::PRICE_DEFAULT);
+        $foodItem->price()->getAmount()->shouldEqual(FoodItem::PRICE_DEFAULT);
         $foodItem->available()->shouldEqual($data['available']);
     }
 }

@@ -2,20 +2,17 @@
 
 namespace Model\MealOrder;
 
-use Money\Currencies\ISOCurrencies;
-use Money\Formatter\DecimalMoneyFormatter;
 use Money\Money;
 
 class FoodItem
 {
     const NAME_DEFAULT = 'food-item';
-    const PRICE_DEFAULT = '0.00';
+    const PRICE_DEFAULT = '0';
     const AVAILABLE_DEFAULT = true;
 
     private $name;
     private $price;
     private $available;
-    private $decimalMoneyFormatter;
 
     public function __construct(array $data)
     {
@@ -26,7 +23,6 @@ class FoodItem
         }
 
         $this->setPrice();
-        $this->decimalMoneyFormatter = new DecimalMoneyFormatter(new ISOCurrencies);
     }
 
     public function name()
@@ -36,7 +32,7 @@ class FoodItem
 
     public function price()
     {
-        return $this->decimalMoneyFormatter->format($this->price);
+        return $this->price;
     }
 
     public function available()
