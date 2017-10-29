@@ -23,7 +23,7 @@ class FeatureContext implements Context
     }
 
     /**
-     * @Given /^(Jane, Petra, Maya) visit a restaurant$/
+     * @Given /^([\w,\s]+) visits? a restaurant$/
      */
     public function customersVisitARestaurant($names)
     {
@@ -64,6 +64,25 @@ class FeatureContext implements Context
         $tip = $this->order->bill()->tip();
 
         Assert::eq($tip->getAmount(), $this->toPence($amount));
+    }
+
+    /**
+     * @When they try to order an unavailable item
+     */
+    public function theyTryToOrderAnUnavailableItem()
+    {
+        $this->order = new Model\MealOrder;
+        $this->item = Model\FoodItemFactory::create(['available' => false]);
+    }
+
+    /**
+     * @Then the order should be rejected
+     */
+    public function theOrderShouldBeRejected()
+    {
+        Assert::throws(function () {
+            $this->order->add($this->item);
+        }, \InvalidArgumentException::class);
     }
 
     private function setUpCustomers($names)
