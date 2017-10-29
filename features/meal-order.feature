@@ -14,3 +14,8 @@ Feature: Meal order
         And Maya pays 5.00 toward the bill
         Then the bill should be closed
         And the tip should be 2.50
+
+    Scenario: Order unavailable item
+        Given Jane visits a restaurant
+        When they try to order an unavailable item
+        Then the order should be rejected
