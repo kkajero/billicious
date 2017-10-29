@@ -19,3 +19,22 @@ Feature: Meal order
         Given Jane visits a restaurant
         When they try to order an unavailable item
         Then the order should be rejected
+
+    Scenario: Cancel ordered item
+        Given John visits a restaurant
+        And they order the following items:
+        | name  | price | available | quantity |
+        | Chips | 2.50  | true      | 1        |
+        | Fish  | 4.00  | true      | 2        |
+        When they cancel item "Chips"
+        Then the bill should be 8.00
+
+    Scenario: Cancel ordered item, after payment
+        Given Peter, Mike visit a restaurant
+        And they order the following items:
+        | name  | price | available | quantity |
+        | Chips | 2.50  | true      | 2        |
+        | Fish  | 4.00  | true      | 2        |
+        And Peter pays 7.00 toward the bill
+        When Mike tries to cancel item "Chips"
+        Then the cancellation should be rejected
