@@ -42,4 +42,9 @@ class Bill
     {
         return $this->total->absolute();
     }
+
+    public function remove(FoodItem $item)
+    {
+        $this->total = $this->total->subtract($item->price());
+    }
 }

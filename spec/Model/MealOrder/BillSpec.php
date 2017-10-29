@@ -28,6 +28,16 @@ class BillSpec extends ObjectBehavior
         $this->total()->getAmount()->shouldBe('5');
     }
 
+    function it_updates_total_with_price_of_items_removed()
+    {
+        $item = $this->add_item_priced_at('3');
+        $this->add_item_priced_at('2');
+
+        $this->remove($item);
+
+        $this->total()->getAmount()->shouldBe('2');
+    }
+
     function it_accepts_payments_to_reduce_total()
     {
         $this->add_item_priced_at('7');
@@ -57,5 +67,7 @@ class BillSpec extends ObjectBehavior
     {
         $item = FoodItemFactory::create(['price' => $value]);
         $this->add($item);
+
+        return $item;
     }
 }
