@@ -34,7 +34,7 @@ class FeatureContext implements Context
      */
     public function theyOrderTheFollowingItems(TableNode $table)
     {
-        throw new PendingException();
+        $this->setUpMealOrder($table);
     }
 
     /**
@@ -67,6 +67,22 @@ class FeatureContext implements Context
         foreach (explode(',', $names) as $index => $name) {
             $id = $index + 1;
             $this->customers[] = new \Model\Customer($id, $name);
+        }
+    }
+
+    private function setUpMealOrder(TableNode $table)
+    {
+        $this->order = new Model\MealOrder;
+
+        foreach ($table as $row) {
+            $row['price'] = str_replace('.', '', $row['price']);
+            $item = Model\FoodItemFactory::create($row);
+
+            $count = 0;
+            while ($count < $row['quantity']) {
+                $this->order->add($item);
+                $count++;
+            }
         }
     }
 }
