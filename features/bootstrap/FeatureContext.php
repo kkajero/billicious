@@ -85,6 +85,38 @@ class FeatureContext implements Context
         }, \InvalidArgumentException::class);
     }
 
+    /**
+     * @When they cancel item ":name"
+     */
+    public function theyCancelItem($name)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then the bill total should be :amount
+     */
+    public function theBillTotalShouldBe($amount)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @When Mike tries to cancel item ":name"
+     */
+    public function theyTryToCancelItem($name)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then the cancellation should be rejected
+     */
+    public function theCancellationShouldBeRejected()
+    {
+        throw new PendingException();
+    }
+
     private function setUpCustomers($names)
     {
         $this->customers = [];

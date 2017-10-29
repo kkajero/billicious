@@ -27,7 +27,7 @@ Feature: Meal order
         | Chips | 2.50  | true      | 1        |
         | Fish  | 4.00  | true      | 2        |
         When they cancel item "Chips"
-        Then the bill should be 8.00
+        Then the bill total should be 8.00
 
     Scenario: Cancel ordered item, after payment
         Given Peter, Mike visit a restaurant
