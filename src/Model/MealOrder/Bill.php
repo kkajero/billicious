@@ -27,6 +27,10 @@ class Bill
 
     public function acceptPayment(Payment $payment)
     {
+        if ($this->closed) {
+            throw new \InvalidArgumentException('Cannot accept payment; bill is closed');
+        }
+
         $this->total = $this->total->subtract($payment->amount());
 
         if (!$this->closed && ($this->total->lessThanOrEqual(Money::GBP(0)))) {
