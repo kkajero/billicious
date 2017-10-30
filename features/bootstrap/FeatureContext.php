@@ -110,7 +110,7 @@ class FeatureContext implements Context
      */
     public function theyTryToCancelItem($name)
     {
-        throw new PendingException();
+        $this->item = $this->extractFoodItem($name, $this->table);
     }
 
     /**
@@ -118,7 +118,9 @@ class FeatureContext implements Context
      */
     public function theCancellationShouldBeRejected()
     {
-        throw new PendingException();
+        Assert::throws(function () {
+            $this->order->cancel($this->item);
+        }, \InvalidArgumentException::class);
     }
 
     private function setUpCustomers($names)
