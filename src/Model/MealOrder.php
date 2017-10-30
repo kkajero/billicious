@@ -32,6 +32,10 @@ class MealOrder
 
     public function cancel(FoodItem $item)
     {
+        if ($this->bill->hasPayments()) {
+            throw new \InvalidArgumentException('Cannot cancel item; payment made already');
+        }
+
         foreach ($this->items as $index => $foodItem) {
             if ($item == $foodItem) {
                 unset($this->items[$index]);

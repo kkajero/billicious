@@ -8,6 +8,7 @@ class Bill
 {
     private $total = 0;
     private $closed = false;
+    private $payments = [];
 
     public function __construct()
     {
@@ -31,6 +32,8 @@ class Bill
         if (!$this->closed && ($this->total->lessThanOrEqual(Money::GBP(0)))) {
             $this->closed = true;
         }
+
+        $this->payments[] = $payment;
     }
 
     public function isClosed()
@@ -46,5 +49,10 @@ class Bill
     public function remove(FoodItem $item)
     {
         $this->total = $this->total->subtract($item->price());
+    }
+
+    public function hasPayments()
+    {
+        return (!empty($this->payments));
     }
 }

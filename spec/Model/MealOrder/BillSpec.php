@@ -63,6 +63,15 @@ class BillSpec extends ObjectBehavior
         $this->tip()->getAmount()->shouldBe('2');
     }
 
+    function it_has_payments_after_accepting_them()
+    {
+        $this->shouldNotHavePayments();
+
+        $this->acceptPayment(PaymentFactory::payment('10'));
+
+        $this->shouldHavePayments();
+    }
+
     private function add_item_priced_at($value)
     {
         $item = FoodItemFactory::create(['price' => $value]);

@@ -4,6 +4,7 @@ namespace spec\Model;
 
 use Model\MealOrder;
 use Model\FoodItemFactory;
+use Model\PaymentFactory;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -57,5 +58,14 @@ class MealOrderSpec extends ObjectBehavior
         $this->cancel($item1);
 
         $this->bill()->total()->getAmount()->shouldBe('20');
+    }
+
+    function it_cancels_food_items_only_if_no_payments_on_bill()
+    {
+        $item = FoodItemFactory::create(['price' => '10']);
+        $this->add($item);
+        $this->bill()->acceptPayment(PaymentFactory::payment('5'));
+
+        $this->shouldThrow('\InvalidArgumentException')->duringCancel($item);
     }
 }
