@@ -27,7 +27,7 @@ class Bill
 
     public function acceptPayment(Payment $payment)
     {
-        if ($this->closed) {
+        if ($this->closed && !$this->isTip($payment)) {
             throw new \InvalidArgumentException('Cannot accept payment; bill is closed');
         }
 
@@ -58,5 +58,10 @@ class Bill
     public function hasPayments()
     {
         return (!empty($this->payments));
+    }
+
+    private function isTip(Payment $payment)
+    {
+        return ($payment instanceof Tip);
     }
 }

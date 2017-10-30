@@ -81,6 +81,16 @@ class BillSpec extends ObjectBehavior
         $this->shouldThrow('\InvalidArgumentException')->duringAcceptPayment($payment);
     }
 
+    function it_accepts_tips_when_closed()
+    {
+        $this->add_item_priced_at('10');
+        $this->acceptPayment(PaymentFactory::payment('10'));
+
+        $this->acceptPayment(PaymentFactory::tip('4'));
+
+        $this->tip()->getAmount()->shouldBe('4');
+    }
+
     private function add_item_priced_at($value)
     {
         $item = FoodItemFactory::create(['price' => $value]);
