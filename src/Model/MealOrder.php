@@ -17,7 +17,7 @@ class MealOrder
         }
 
         $this->items[] = $item;
-        $this->updateBill($item);
+        $this->addToBill($item);
     }
 
     public function items()
@@ -30,12 +30,30 @@ class MealOrder
         return $this->bill;
     }
 
-    private function updateBill(FoodItem $item)
+    public function cancel(FoodItem $item)
+    {
+        foreach ($this->items as $index => $foodItem) {
+            if ($item == $foodItem) {
+                unset($this->items[$index]);
+                $this->removeFromBill($item);
+                break;
+            }
+        }
+    }
+
+    private function addToBill(FoodItem $item)
     {
         if (!$this->bill) {
             $this->bill = new Bill;
         }
 
         $this->bill->add($item);
+    }
+
+    private function removeFromBill(FoodItem $item)
+    {
+        if ($this->bill) {
+            $this->bill->remove($item);
+        }
     }
 }

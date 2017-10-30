@@ -46,4 +46,16 @@ class MealOrderSpec extends ObjectBehavior
 
         $this->shouldThrow('\InvalidArgumentException')->duringAdd($unavailableItem);
     }
+
+    function it_cancels_food_items()
+    {
+        $item1 = FoodItemFactory::create(['price' => '10']);
+        $item2 = FoodItemFactory::create(['price' => '20']);
+        $this->add($item1);
+        $this->add($item2);
+
+        $this->cancel($item1);
+
+        $this->bill()->total()->getAmount()->shouldBe('20');
+    }
 }
