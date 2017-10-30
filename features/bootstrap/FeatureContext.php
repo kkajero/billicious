@@ -90,7 +90,9 @@ class FeatureContext implements Context
      */
     public function theyCancelItem($name)
     {
-        throw new PendingException();
+        $item = $this->extractFoodItem($name, $this->table);
+
+        $this->order->cancel($item);
     }
 
     /**
@@ -98,7 +100,9 @@ class FeatureContext implements Context
      */
     public function theBillTotalShouldBe($amount)
     {
-        throw new PendingException();
+        $total = $this->order->bill()->total();
+
+        Assert::eq($total->getAmount(), $this->toPence($amount));
     }
 
     /**
@@ -128,6 +132,7 @@ class FeatureContext implements Context
 
     private function setUpMealOrder(TableNode $table)
     {
+        $this->table = $table;
         $this->order = new Model\MealOrder;
 
         foreach ($table as $row) {
@@ -138,6 +143,16 @@ class FeatureContext implements Context
             while ($count < $row['quantity']) {
                 $this->order->add($item);
                 $count++;
+            }
+        }
+    }
+
+    private function extractFoodItem($name, TableNode $table)
+    {
+        foreach ($this->table as $row) {
+            if ($name == $row['name']) {
+                $row['price'] = $this->toPence($row['price']);
+                return Model\FoodItemFactory::create($row);
             }
         }
     }
